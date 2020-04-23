@@ -1,0 +1,21 @@
+=== Cara Mengubah Background Grub di Linux ===
+
+Perintah:
+sudo add-apt-repository ppa:danielrichter2007/grub-customizer 
+sudo apt update
+sudo apt install grub-customizer
+sudo update-grub
+
+Langkah-langkah:
+1. Copas repo diatas pada terminal linux
+2. Update repo
+3. Install software grub-customizer
+4. pilih tab Appearance Setting
+5. klik pilihan background-image dan pilih gambar kesukaan kalian, usahakan file tidak lebih dari 2MB
+6. Save konfigurasi
+7. Update Grub linux kalian 
+Jika ingin mengubah urutan boot linux dan windows, kalian tinggal Pilih Tab List Configuration
+- Biasanya OS linux ada dipaling atas
+- Kalian cari boot windows kalian, tinggal naikkan prioritynya jadi pertama atau setelah linux.
+- Terakhir klik save
+- Update Grub linux kalian
