@@ -1,4 +1,5 @@
 === Cara Mengubah Background Grub di Linux ===
+https://youtu.be/BAFFHG1iIyA
 
 Perintah:
 sudo add-apt-repository ppa:danielrichter2007/grub-customizer 
