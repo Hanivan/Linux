@@ -1,5 +1,18 @@
 ===== INSTALL ARCH LINUX (MBR-MODE)=====
 
+/*
+Full-Install Arch Linux v1.0
+By:@hanivanrizky
+YouTube: Lintasan Video
+
+##PERHATIAN##
+Ini adalah kumpulan script/command untuk instalasi arch-linux buatan saya sendiri. Yang berdasarkan dari wiki arch linux itu sendiri. Tetapi, jika terdapat kegagalan sistem. Saya tidak bertanggung jawab atas itu. Dan untuk UEFI System, Saya Belum Pernah Coba... Jadi teman-teman jangan terlalu tergantung sama script ini
+##Pastikan tidak typo yaa##
+
+Untuk sdX sesuaikan dengan sistem kalian, misal => /dev/sda atau /dev/sdb
+Urutan nomer-nya tergantung kalian. Misal kalian buat partisi swap dulu. Nah, maka yang /dev/sda1 adalah swap partition. Begitu seterusnya
+*/
+
 ping -c 4 google.com
 
 timedatectl status
@@ -12,18 +25,12 @@ cfdisk /dev/sda
 		root*(bootable)
 		home
 		swap
-	!Kalau Pake UEFI!
-	Buat Partisi:
-		EFI-
 
-mkfs.ext4 /dev/sda1
+mkfs.ext4 /dev/sda1 (Untuk root)
 
-mkfs.ext4 /dev/sda2
+mkfs.ext4 /dev/sda2 (Untuk home)
 
-mkfs.ext4 /dev/sda3
-
-  !Untuk Partisi EFI!
-    mkfs.fat -F32 /dev/sdX
+mkfs.ext4 /dev/sda3 (Untuk swap)
 
 mount /dev/sda1 /mnt (Root Partition)
 
@@ -76,27 +83,26 @@ nano /etc/sudoers
 	tambahkan dibawahnya => namauserbaru ALL=(ALL) ALL
 	ctrl+o; ctrl+x
 
-pacman -S dhcpcd
+pacman -S dhcpcd networkmanager
 
 systemctl enable dhcpcd
 
-pacman -S linux linux-firmware vim nano
+systemctl enable NetworkManager.service
+
+  !Disanrankan!
+pacman -S linux vim nano
 
 mkinitcpio -p linux
 
-    !Untuk UEFI System!
-pacman -S grub efibootmgr
+  !Atau!
+pacman -S linux-lts vim nano
 
-mkdir /boot/efi
+mkinitcpio -p linux-lts
 
-mount /dev/sd1 /boot/efi
+/*Jika ada error*/
+pacman -R linux-lts
 
-grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
-
-grub-mkconfig -o /boot/grub/grub.cfg
-
-
-    !Untuk Legacy System!
+ !Instalasi Grub!
 pacman -S grub os-prober
 
 grub-install --recheck --target=i386-pc /dev/sdX
@@ -109,17 +115,20 @@ umount -R /mnt
 
 reboot
 
-/*Untuk memastikan arch linux sudah terinstall lebih baik reboot dahulu*/
+/*Untuk memastikan arch linux sudah terinstall lebih baik reboot dahulu dan lepaskan boot installer-nya*/
 
 
 ===== INSTALL DESKTOP ENV XFCE =====
 
-sudo pacman -S xorg lightdm
+sudo pacman -S xorg xorg-xinit lightdm
+	pilih vga-mu / pilih xorg-server
 
-sudo pacman -S xfce4
+sudo pacman -S xfce4 firefox 
  (Enter Lagi)
+ 
+sudo systemctl enable xfce4
 
-
+reboot
 
 ===== INSTALL DESKTOP ENV LXDE =====
 
@@ -142,7 +151,7 @@ sudo pacman -S i3
 sudo pacman -S firefox dmenu nitrogen termine
 	Enter
 
-sudo pacman -S lightdm light-gtk-greeter lightdm-gtk-greeter-settings'
+sudo pacman -S lightdm light-gtk-greeter lightdm-gtk-greeter-settings
 
 sudo systemctl enable lightdm
 
@@ -180,4 +189,4 @@ xrandr
 
 xrandr -s pilih_resolusi_layar
 
-/*Script instalasi driver wifi-nya menanti... */
+/*Script instalasi driver wifi-nya menanti... Karena, Pada saat saya mempraktekkan script ini. Terdapat Bug driver wifi atheros ar9271.*/
