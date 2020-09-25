@@ -1,0 +1,183 @@
+===== INSTALL ARCH LINUX (MBR-MODE)=====
+
+ping -c 4 google.com
+
+timedatectl status
+
+timedatectl set-ntp true
+
+cfdisk /dev/sda
+	- Pilih dos
+	Buat Partisi:
+		root*(bootable)
+		home
+		swap
+	!Kalau Pake UEFI!
+	Buat Partisi:
+		EFI-
+
+mkfs.ext4 /dev/sda1
+
+mkfs.ext4 /dev/sda2
+
+mkfs.ext4 /dev/sda3
+
+  !Untuk Partisi EFI!
+    mkfs.fat -F32 /dev/sdX
+
+mount /dev/sda1 /mnt (Root Partition)
+
+mkdir /mnt/home
+
+mount /dev/sda2 /mnt/home
+
+mkswap /dev/sda3
+
+swapon /dev/sda3
+
+lsblk
+
+pacstrap /mnt base base-devel
+
+cat /mnt/etc/fstab
+
+genfstab -U /mnt >> /mnt/etc/fstab
+
+arch-chroot /mnt
+
+ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime
+
+hwclock --systohc
+
+pacman -S nano
+
+nano /etc/locale.gen
+	hapus bagian (#) di en_US.UTF-8
+
+echo LANG=en_US.UTF-8 > /etc/locale.conf
+
+echo (namalinux) > /etc/hostname
+
+nano /etc/hosts
+	tambahkan
+		#<ip-address>	<hostname.localdomain>	<localhost>
+		127.0.0.1		localhost.localdomain	localhost
+		::1		localhost.localdomain	locahost
+		127.0.1.1		namalinux.localdomain	namalinux
+
+		# End of file
+
+useradd -m -G wheel,users -s /bin/bash userbaru
+
+passwd userbaru
+
+nano /etc/sudoers
+	cari => root ALL=(ALL) ALL
+	tambahkan dibawahnya => namauserbaru ALL=(ALL) ALL
+	ctrl+o; ctrl+x
+
+pacman -S dhcpcd
+
+systemctl enable dhcpcd
+
+pacman -S linux linux-firmware vim nano
+
+mkinitcpio -p linux
+
+    !Untuk UEFI System!
+pacman -S grub efibootmgr
+
+mkdir /boot/efi
+
+mount /dev/sd1 /boot/efi
+
+grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
+
+grub-mkconfig -o /boot/grub/grub.cfg
+
+
+    !Untuk Legacy System!
+pacman -S grub os-prober
+
+grub-install --recheck --target=i386-pc /dev/sdX
+
+grub-mkconfig -o /boot/grub/grub.cfg
+
+exit
+
+umount -R /mnt
+
+reboot
+
+/*Untuk memastikan arch linux sudah terinstall lebih baik reboot dahulu*/
+
+
+===== INSTALL DESKTOP ENV XFCE =====
+
+sudo pacman -S xorg lightdm
+
+sudo pacman -S xfce4
+ (Enter Lagi)
+
+
+
+===== INSTALL DESKTOP ENV LXDE =====
+
+login dengan user baru
+
+sudo pacman -S (pilih desktop environmentmu)
+
+sudo pacman -S slim
+
+systemctl enable slim
+
+echo "exec startlxde" > ~/.xinitrc
+
+===== INSTALL DESKTOP ENV i3WM =====
+sudo pacman -Syyu
+
+sudo pacman -S i3
+	pilih 1 3 4 5
+
+sudo pacman -S firefox dmenu nitrogen termine
+	Enter
+
+sudo pacman -S lightdm light-gtk-greeter lightdm-gtk-greeter-settings'
+
+sudo systemctl enable lightdm
+
+reboot
+
+Lalu pilih:
+	Enter
+	Win sebagai super key
+	Win+Enter, Membuka terminal
+	Win+d, Menampilkan menu aplikasi
+	Win+V, Split tampilan apliksi
+	Win+Shift+q, untuk keluar dari aplikasi
+	Win+Shift+i, Untuk logout
+
+===== INSTALL DESKTOP ENV KDE PLASMA =====
+sudo pacman -S pulseaudio pulseaudio-alsa
+
+sudo pacman -S xorg xorg-xinit
+	pilih vga-mu / pilih xorg-server
+
+echo "exec startkde" > ~/.xinitrc
+
+sudo pacman -S plasma-desktop
+
+sudo pacman -S sddm
+
+sudo pacman -S firefox konsole dolphin kate
+
+systemctl start sddm
+
+startx
+
+===== SETTING RESOLUSI LAYAR =====
+xrandr
+
+xrandr -s pilih_resolusi_layar
+
+/*Script instalasi driver wifi-nya menanti... */
