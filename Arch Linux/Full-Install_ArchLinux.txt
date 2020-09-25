@@ -11,6 +11,8 @@ Ini adalah kumpulan script/command untuk instalasi arch-linux buatan saya sendir
 
 Untuk sdX sesuaikan dengan sistem kalian, misal => /dev/sda atau /dev/sdb
 Urutan nomer-nya tergantung kalian. Misal kalian buat partisi swap dulu. Nah, maka yang /dev/sda1 adalah swap partition. Begitu seterusnya
+
+Pastikan untuk proses instalasi, menggunakan koneksi LAN. Atau USB Tethering dari HandPhone
 */
 
 ping -c 4 google.com
