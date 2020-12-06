@@ -24,7 +24,7 @@ timedatectl set-ntp true
 cfdisk /dev/sda
 	- Pilih dos
 	Buat Partisi:
-		root*(bootable)
+		root*(bootable) // pastikan tanda * Pada table Boot aktif
 		home
 		swap
 
